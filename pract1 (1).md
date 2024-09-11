@@ -8,6 +8,11 @@
 
 Вывести отсортированный в алфавитном порядке список имен пользователей в файле passwd (вам понадобится grep).
 
+grep '.*' /etc/passwd | cut -d: -f1 | sort
+
+![image](https://github.com/user-attachments/assets/0b674446-7d31-4804-a144-584e956542fe)
+
+
 ## Задача 2
 
 Вывести данные /etc/protocols в отформатированном и отсортированном порядке для 5 наибольших портов, как показано в примере ниже:
@@ -20,6 +25,10 @@
 139 hip
 138 manet
 ```
+awk '{print $2, $1}' /etc/protocols | sort -nr | head -n 5
+
+![image](https://github.com/user-attachments/assets/614bf0e1-ced2-4e20-9c61-84badb30f3c9)
+
 
 ## Задача 3
 
@@ -34,6 +43,11 @@
 
 Перед отправкой решения проверьте его в ShellCheck на предупреждения.
 
+text="Hello from RTU MIREA!"; text_length=${#text}; line=$(printf "%${text_length}s" | tr ' ' '-'); echo "+${line}+"; echo "| ${text} |"; echo "+${line}+"
+
+![image](https://github.com/user-attachments/assets/1250a4f4-67fb-4e2e-bbaf-37252f5a75f5)
+
+
 ## Задача 4
 
 Написать программу для вывода всех идентификаторов (по правилам C/C++ или Java) в файле (без повторений).
@@ -43,6 +57,7 @@
 ```
 h hello include int main n printf return stdio void world
 ```
+![image](https://github.com/user-attachments/assets/074cf47c-6cb3-4079-be92-adba556a73e9)
 
 ## Задача 5
 
