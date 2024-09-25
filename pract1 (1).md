@@ -70,50 +70,126 @@ h hello include int main n printf return stdio void world
 ```
 
 В результате для banner задаются правильные права доступа и сам banner копируется в /usr/local/bin.
+```
+#!/bin/bash
+
+if [ "$#" -ne 1 ];
+ exit 1 
+fi
+COMMAND=$1
+if [ ! -f "$COMMAND" ]; then
+ exit 1 
+fi
+sudo cp "$COMMAND" /usr/local/bin/
+sudo chmod +x /usr/local/bin/"$COMMAND"
+echo "$COMMAND copied in /usr/local/bin"
+```
+![image](https://github.com/user-attachments/assets/bdd6ee5b-2512-4eab-ab82-a0f60cb2e363)
 
 ## Задача 6
 
 Написать программу для проверки наличия комментария в первой строке файлов с расширением c, js и py.
+```
+#!/bin/bash
+
+if [ "$# -ne 1 ]; then
+ exit 1 
+fi
+file=$1
+if [ "$file" != "*.c" ] && [ "$file" != "*.py" ] && [ "$file" != "*.js" ]
+ exit 1 
+fi 
+if [[ $(head -n 1 $file) == \#* ]]; then
+ echo "py"
+fi
+if [[ $(head -n 1 $file) == \//* ]]; then
+ echo "c or js"
+fi
+```
+![image](https://github.com/user-attachments/assets/c1147886-88cc-47dc-9ea0-3bdff31ff606)
 
 ## Задача 7
 
 Написать программу для нахождения файлов-дубликатов (имеющих 1 или более копий содержимого) по заданному пути (и подкаталогам).
 
+```
+#!/bin/bash
+
+if [ "$#" -ne 1 ]; then
+ exit 1
+fi
+DIR=$1
+if [ ! -d "$DIR" ]; then
+ exit 1
+fi
+find "$DIR" ! -empty -type f -exec md5sum {} + | sort
+echo "Task complete"
+```
+![369774597-12a90812-df6e-4e31-9562-98276f17e563](https://github.com/user-attachments/assets/fe3547c0-a91c-4cd0-b6b9-117763173e53)
+
+
 ## Задача 8
 
 Написать программу, которая находит все файлы в данном каталоге с расширением, указанным в качестве аргумента и архивирует все эти файлы в архив tar.
 
+```
+#!/bin/bash
+
+if [ "$#" -ne 2 ]; then
+ exit 1
+fi
+CATALOG="$1"
+ARCHIVE="$2"
+
+tar -cf "$ARCHIVE.tar" $(find . -maxdepth 1 -type f -name "*.$CATALOG")
+
+echo "Archive '$ARCHIVE.tar' created."
+```
+![369771540-4ecb252e-9b21-4e24-b1a0-23897ab1989b](https://github.com/user-attachments/assets/556dbfa3-d952-4046-bbfd-92384a62e454)
+
 ## Задача 9
 
 Написать программу, которая заменяет в файле последовательности из 4 пробелов на символ табуляции. Входной и выходной файлы задаются аргументами.
+```
+#!/bin/bash
+
+if [ "$# -ne 2 ]; then
+ exit 1
+fi
+
+INPUT="$1"
+OUTPUT="$2"
+
+if [ ! -f "$INPUT" ]; then
+ exit 1
+fi
+
+sed 's/    /\t/g' "$INPUT" > "$OUTPUT"
+echo "Task complete"
+```
+![369771618-5537ec83-0878-487a-b487-6d97893142a5](https://github.com/user-attachments/assets/9bbd6295-ebf0-4fa0-8415-0999850549ac)
+
 
 ## Задача 10
 
 Написать программу, которая выводит названия всех пустых текстовых файлов в указанной директории. Директория передается в программу параметром. 
 
-## Полезные ссылки
+```
+#!/bin/bash
 
-Линукс в браузере: https://bellard.org/jslinux/
+if [ "$#Э -ne 1 ]; then 
+ exit 1
+fi # конец if
+DIR=$1
 
-ShellCheck: https://www.shellcheck.net/
+if [ ! -d "$DIR" ]; then
+ echo "ERR: Dir doesn't exist."
+ exit 1
+else
+ echo "Searching..."
+fi
 
-Разработка CLI-приложений
+find "$DIR" -type f -name "*.txt" -empty
+```
+![369774975-47e54b40-d527-482d-b4b9-27f457147680](https://github.com/user-attachments/assets/130ad599-24e0-4e4f-8b40-0643e5cb39e9)
 
-Общие сведения
-
-https://ru.wikipedia.org/wiki/Интерфейс_командной_строки
-https://nullprogram.com/blog/2020/08/01/
-https://habr.com/ru/post/150950/
-
-Стандарты
-
-https://www.gnu.org/prep/standards/standards.html#Command_002dLine-Interfaces
-https://www.gnu.org/software/libc/manual/html_node/Argument-Syntax.html
-https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap12.html
-
-Реализация разбора опций
-
-Питон
-
-https://docs.python.org/3/library/argparse.html#module-argparse
-https://click.palletsprojects.com/en/7.x/
